@@ -65,7 +65,7 @@ export default function ContactForm() {
       <div className="mt-4 flex items-center gap-3">
         <button
           type="submit"
-          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[15px] font-semibold text-white transition-transform active:scale-[0.98]"
+          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[15px] font-semibold text-paper transition-transform active:scale-[0.98]"
         >
           <Send className="size-4" strokeWidth={2.25} />
           Send via email

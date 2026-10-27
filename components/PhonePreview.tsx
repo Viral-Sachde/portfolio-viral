@@ -4,7 +4,7 @@ import { palette } from "@/lib/mosaic";
 // Phone-framed project preview with an illustrated screen per project.
 export default function PhonePreview({ preview, title }: { preview: Preview; title: string }) {
   return (
-    <div className="rounded-[2.2rem] bg-ink p-[6px] shadow-[0_12px_30px_-12px_rgb(0_0_0/0.35)]" role="img" aria-label={`${title} preview`}>
+    <div className="light-scope rounded-[2.2rem] bg-ink p-[6px] shadow-[0_12px_30px_-12px_rgb(0_0_0/0.35)]" role="img" aria-label={`${title} preview`}>
       <div className="relative aspect-[9/19] overflow-hidden rounded-[1.85rem] bg-white">
         <div className="absolute left-1/2 top-2 z-10 h-[16px] w-[32%] -translate-x-1/2 rounded-full bg-ink" />
         <Screen kind={preview.kind} />
@@ -19,6 +19,7 @@ function Screen({ kind }: { kind: Preview["kind"] }) {
   if (kind === "meet") return <Meet />;
   if (kind === "bday") return <Bday />;
   if (kind === "extension") return <Extension />;
+  if (kind === "brat") return <Brat />;
   return <Chat />;
 }
 
@@ -35,7 +36,7 @@ function Meet() {
       </div>
       <div className="mt-2.5 grid flex-1 grid-cols-2 gap-1.5">
         {tiles.map((c, i) => (
-          <div key={i} className="relative grid place-items-center rounded-xl" style={{ background: `${c}33` }}>
+          <div key={i} className="relative grid place-items-center rounded-xl" style={{ background: `color-mix(in srgb, ${c} 20%, transparent)` }}>
             <span className="size-8 rounded-full" style={{ background: c }} />
             <span className="absolute bottom-1.5 left-1.5 h-1 w-6 rounded-full bg-white/40" />
           </div>
@@ -215,6 +216,32 @@ function Extension() {
         </div>
         <div className="mt-2.5 rounded-full bg-blue py-1.5 text-center text-[10px] font-semibold text-white">Download all</div>
       </div>
+    </div>
+  );
+}
+
+function Brat() {
+  return (
+    <div className="flex h-full flex-col bg-paper px-3 pt-10">
+      <div className="text-[10px] font-medium text-muted">Generator</div>
+      <div className="grid aspect-square w-full place-items-center bg-[#8ACE00]">
+        <span className="font-[Arial_Narrow,Arial,sans-serif] text-[34px] lowercase tracking-[-0.06em] text-black [filter:blur(0.7px)] [transform:scaleX(0.9)]">
+          brat
+        </span>
+      </div>
+      <div className="mt-2.5 rounded-full bg-fill px-3 py-1.5 text-[10px] text-muted">type a lyric…</div>
+      <div className="mt-2 flex gap-1">
+        {[
+          ["Brat", "#8ACE00", "text-black"],
+          ["Cyber", "#00E5FF", "text-black"],
+          ["Sunset", "#FF7A59", "text-white"],
+        ].map(([t, c, fg], i) => (
+          <span key={t} className={`flex-1 rounded-full py-1 text-center text-[9px] font-semibold ${fg} ${i === 0 ? "ring-2 ring-ink/80" : ""}`} style={{ background: c }}>
+            {t}
+          </span>
+        ))}
+      </div>
+      <div className="mt-auto mb-5 rounded-full bg-ink py-1.5 text-center text-[10px] font-semibold text-paper">Download PNG</div>
     </div>
   );
 }

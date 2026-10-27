@@ -67,7 +67,7 @@ export const experience = [
   },
 ];
 
-export type Preview = { kind: "flow" | "cron" | "chat" | "meet" | "bday" | "extension" };
+export type Preview = { kind: "flow" | "cron" | "chat" | "meet" | "bday" | "extension" | "brat" };
 
 export type Project = {
   slug: string;
@@ -133,12 +133,21 @@ export const projects: Project[] = [
     preview: { kind: "extension" },
     href: "https://github.com/Viral-Sachde/crazy-image-pro",
   },
+  {
+    slug: "brat-gen",
+    title: "Brat Generator",
+    description: "Make images in the brat album look: live canvas preview, word-by-word exports, lyrics search, themes.",
+    platforms: "Web",
+    stack: "JavaScript · Canvas",
+    preview: { kind: "brat" },
+    href: "https://github.com/Viral-Sachde/brat-gen",
+  },
 ];
 
 export const stackGroups = [
-  { key: "ui", label: "UI", color: "#0A84FF", items: ["React", "Next.js", "Vue", "Electron", "React Native", "Tailwind", "Framer Motion"] },
-  { key: "api", label: "API", color: "#34C759", items: ["Node.js", "NestJS", "Express", "FastAPI", "GraphQL", "REST", "Workflow engines"] },
-  { key: "data", label: "Data", color: "#1C3AA9", items: ["PostgreSQL", "Prisma", "MongoDB", "MySQL", "Multi-tenancy", "RBAC"] },
-  { key: "cloud", label: "Cloud", color: "#F2B705", items: ["AWS", "Pulumi", "Docker", "ECS Fargate", "Lambda", "CI/CD"] },
-  { key: "ai", label: "AI", color: "#1A7F37", items: ["Claude", "OpenAI", "Gemini", "LangChain", "RAG", "Embeddings"] },
+  { key: "ui", label: "UI", color: "var(--color-blue)", items: ["React", "Next.js", "Vue", "Electron", "React Native", "Tailwind", "Framer Motion"] },
+  { key: "api", label: "API", color: "var(--color-green)", items: ["Node.js", "NestJS", "Express", "FastAPI", "GraphQL", "REST", "Workflow engines"] },
+  { key: "data", label: "Data", color: "var(--color-blue-deep)", items: ["PostgreSQL", "Prisma", "MongoDB", "MySQL", "Multi-tenancy", "RBAC"] },
+  { key: "cloud", label: "Cloud", color: "var(--color-yellow-deep)", items: ["AWS", "Pulumi", "Docker", "ECS Fargate", "Lambda", "CI/CD"] },
+  { key: "ai", label: "AI", color: "var(--color-green-deep)", items: ["Claude", "OpenAI", "Gemini", "LangChain", "RAG", "Embeddings"] },
 ];

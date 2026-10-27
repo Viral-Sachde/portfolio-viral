@@ -65,7 +65,7 @@ export default function CursorPixel() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-50 rounded-[2px] opacity-0 shadow-[0_0_0_1.5px_#fff] transition-[width,height,background-color,scale,opacity] duration-200"
+      className="pointer-events-none fixed left-0 top-0 z-[60] rounded-[2px] opacity-0 shadow-[0_0_0_1.5px_var(--color-paper)] transition-[width,height,background-color,scale,opacity] duration-200"
     />
   );
 }

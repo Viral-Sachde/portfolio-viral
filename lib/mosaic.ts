@@ -1,5 +1,16 @@
 // Shared pixel palette and the hero's mosaic maps: each char is one cell, "." is empty.
+// Live palette: CSS variables so the theme picker can recolour everything at runtime.
 export const palette: Record<string, string> = {
+  b: "var(--color-blue)",
+  n: "var(--color-blue-deep)",
+  g: "var(--color-green)",
+  d: "var(--color-green-deep)",
+  y: "var(--color-yellow)",
+  o: "var(--color-yellow-deep)",
+};
+
+// Fixed hex values for generated images (favicon, social card), which can't read CSS variables.
+export const paletteHex: Record<string, string> = {
   b: "#0A84FF",
   n: "#1C3AA9",
   g: "#34C759",

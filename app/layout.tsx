@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import CursorPixel from "@/components/CursorPixel";
+import ThemePicker from "@/components/ThemePicker";
 import "./globals.css";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -20,8 +21,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+  colorScheme: "light dark",
   viewportFit: "cover",
 };
 
@@ -34,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
         {children}
         <CursorPixel />
+        <ThemePicker />
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { palette } from "@/lib/mosaic";
+import { paletteHex } from "@/lib/mosaic";
 
 // Square mosaic in the hero's style (blues, yellows, greens, white gaps), used as the favicon, Apple icon and social card mark.
 const MARK = [
@@ -29,7 +29,7 @@ export function MosaicMark({ size, radius }: { size: number; radius: number }) {
       {MARK.map((row, y) => (
         <div key={y} style={{ display: "flex", height: cell }}>
           {row.split("").map((c, x) => (
-            <div key={x} style={{ width: cell, height: cell, background: palette[c] ?? "#fff" }} />
+            <div key={x} style={{ width: cell, height: cell, background: paletteHex[c] ?? "#fff" }} />
           ))}
         </div>
       ))}

@@ -33,7 +33,7 @@ export default function ScrollBlur() {
       <div />
       <div />
       <div className={`scroll-hint ${scrolled ? "is-gone" : ""}`}>
-        <span className="flex items-center gap-1 rounded-full bg-white/80 px-3 py-1.5 text-[12px] font-medium text-muted shadow-[0_2px_10px_rgb(0_0_0/0.08)]">
+        <span className="flex items-center gap-1 rounded-full bg-paper/80 px-3 py-1.5 text-[12px] font-medium text-muted shadow-[0_2px_10px_rgb(0_0_0/0.08)]">
           Scroll
           <ChevronDown className="size-3.5" strokeWidth={2.5} />
         </span>

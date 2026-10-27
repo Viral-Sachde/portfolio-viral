@@ -17,9 +17,9 @@ import { experience, projects } from "@/lib/content";
 
 const links = [
   { label: "Email", detail: "vsachde74@gmail.com", href: "mailto:vsachde74@gmail.com", icon: Mail, tint: "bg-blue" },
-  { label: "GitHub", detail: "Viral-Sachde", href: "https://github.com/Viral-Sachde", icon: GithubIcon, tint: "bg-ink" },
+  { label: "GitHub", detail: "Viral-Sachde", href: "https://github.com/Viral-Sachde", icon: GithubIcon, tint: "bg-black" },
   { label: "LinkedIn", detail: "viral-sachde", href: "https://in.linkedin.com/in/viral-sachde-18664b24b", icon: LinkedinIcon, tint: "bg-blue-deep" },
-  { label: "X", detail: "@viralpullls", href: "https://x.com/viralpullls", icon: XIcon, tint: "bg-ink" },
+  { label: "X", detail: "@viralpullls", href: "https://x.com/viralpullls", icon: XIcon, tint: "bg-black" },
   { label: "Résumé", detail: "Download PDF", href: "/resume.pdf", icon: FileText, tint: "bg-green", download: true },
 ];
 
@@ -45,7 +45,7 @@ const steps = [
   {
     title: "built to last",
     line: "if i cant read it at 2am half asleep it doesnt ship. boring code, good sleep",
-    icon: <Wrench className="size-4 text-ink" strokeWidth={2.25} />,
+    icon: <Wrench className="size-4 text-black" strokeWidth={2.25} />,
     tint: "bg-yellow",
   },
 ];
@@ -92,7 +92,7 @@ export default function Home() {
             href="/resume.pdf"
             download="Viral-Sachde-Resume.pdf"
             data-pulse
-            className="flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-white transition-transform active:scale-95"
+            className="flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-transform active:scale-95"
           >
             <ArrowDown className="size-4" strokeWidth={2.25} />
             Résumé
@@ -174,7 +174,7 @@ export default function Home() {
         </div>
         <Link
           href="/projects"
-          className="group mt-6 inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-white transition-transform active:scale-95"
+          className="group mt-6 inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-transform active:scale-95"
         >
           All projects
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />
@@ -203,7 +203,7 @@ export default function Home() {
               <span className="text-[11px] opacity-80">production software</span>
             </div>
           </Widget>
-          <Widget className="bg-yellow text-ink">
+          <Widget className="bg-yellow text-black">
             <span className="text-[12px] font-medium opacity-70">End to end</span>
             <div>
               <div className="text-[28px] font-semibold leading-none tracking-[-0.04em]">10+</div>
@@ -243,7 +243,7 @@ export default function Home() {
         </div>
         <Link
           href="/writing"
-          className="group mt-5 inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-white transition-transform active:scale-95"
+          className="group mt-5 inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-transform active:scale-95"
         >
           Read more
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />

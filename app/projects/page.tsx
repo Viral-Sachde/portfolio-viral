@@ -33,7 +33,7 @@ export default function ProjectsPage() {
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-1 rounded-full bg-ink px-3.5 py-2 text-[13px] font-medium text-white transition-transform active:scale-95"
+                  className="mt-4 inline-flex items-center gap-1 rounded-full bg-ink px-3.5 py-2 text-[13px] font-medium text-paper transition-transform active:scale-95"
                 >
                   Open
                   <ArrowUpRight className="size-3.5" strokeWidth={2.5} />

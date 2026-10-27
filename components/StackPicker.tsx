@@ -14,7 +14,7 @@ export default function StackPicker() {
     <div>
       <div className="relative flex rounded-[10px] bg-fill p-[3px]">
         <span
-          className="absolute inset-y-[3px] left-[3px] rounded-[8px] bg-white shadow-[0_1px_3px_rgb(0_0_0/0.12)] transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+          className="absolute inset-y-[3px] left-[3px] rounded-[8px] bg-paper shadow-[0_1px_3px_rgb(0_0_0/0.12)] transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
           style={{ width: `calc((100% - 6px) / ${tabs.length})`, transform: `translateX(${index * 100}%)` }}
         />
         {tabs.map((t) => (
@@ -39,8 +39,8 @@ export default function StackPicker() {
                 key={item}
                 className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-[14px] transition-all duration-300"
                 style={{
-                  borderColor: on && active !== "all" ? g.color : "#E5E5EA",
-                  background: on && active !== "all" ? `${g.color}14` : "#fff",
+                  borderColor: on && active !== "all" ? g.color : "var(--color-line)",
+                  background: on && active !== "all" ? `color-mix(in srgb, ${g.color} 12%, var(--color-paper))` : "var(--color-paper)",
                   opacity: on ? 1 : 0.28,
                   transform: on && active !== "all" ? "scale(1.04)" : "none",
                 }}
