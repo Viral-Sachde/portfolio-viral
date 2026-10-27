@@ -1,5 +1,5 @@
 import { mulberry32 } from "@/lib/random";
-import { palette } from "./Mosaic";
+import { palette } from "@/lib/mosaic";
 
 const COLS = 16;
 const ROWS = 9;

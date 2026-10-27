@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, ChevronRight, FileText, Mail, Plus, Wrench } from "lucide-react";
+import { ArrowDown, ArrowRight, ChevronRight, FileText, Mail, Plus, Rocket, Wrench } from "lucide-react";
 import Board from "@/components/Board";
 import { GithubIcon, LinkedinIcon, XIcon } from "@/components/BrandIcons";
 import Clock from "@/components/Clock";
@@ -7,7 +7,8 @@ import ConsoleHello from "@/components/ConsoleHello";
 import ContactForm from "@/components/ContactForm";
 import Cover from "@/components/Cover";
 import InView from "@/components/InView";
-import Mosaic, { CORNER, EDGE, GROUND } from "@/components/Mosaic";
+import Mosaic from "@/components/Mosaic";
+import { CORNER, EDGE, GROUND } from "@/lib/mosaic";
 import ProjectPhone from "@/components/ProjectPhone";
 import ScrollBlur from "@/components/ScrollBlur";
 import StackPicker from "@/components/StackPicker";
@@ -20,6 +21,33 @@ const links = [
   { label: "LinkedIn", detail: "viral-sachde", href: "https://in.linkedin.com/in/viral-sachde-18664b24b", icon: LinkedinIcon, tint: "bg-blue-deep" },
   { label: "X", detail: "@viralpullls", href: "https://x.com/viralpullls", icon: XIcon, tint: "bg-ink" },
   { label: "Résumé", detail: "Download PDF", href: "/resume.pdf", icon: FileText, tint: "bg-green", download: true },
+];
+
+const steps = [
+  {
+    title: "curious first",
+    line: "i read the source before i trust anything. ppl call it overthinking, i call it saving myself a week",
+    icon: <span className="text-[14px] font-semibold">?</span>,
+    tint: "bg-blue",
+  },
+  {
+    title: "get it live",
+    line: "a demo on my laptop isnt a product. i stay on it till real ppl are using it in prod, logs and all",
+    icon: <Rocket className="size-4" strokeWidth={2.25} />,
+    tint: "bg-blue-deep",
+  },
+  {
+    title: "then iterate",
+    line: "v1 goes out a little messy, like baroda sev usal. still hits. users tell me whats broken and v2 is basically their idea w better spacing",
+    icon: <ArrowRight className="size-4 -rotate-45" strokeWidth={2.5} />,
+    tint: "bg-green",
+  },
+  {
+    title: "built to last",
+    line: "if i cant read it at 2am half asleep it doesnt ship. boring code, good sleep",
+    icon: <Wrench className="size-4 text-ink" strokeWidth={2.25} />,
+    tint: "bg-yellow",
+  },
 ];
 
 function Section({ id, label, wide, children }: { id?: string; label: string; wide?: boolean; children: React.ReactNode }) {
@@ -48,8 +76,8 @@ export default function Home() {
     <main className="overflow-x-clip">
       <header className="relative isolate flex min-h-[88svh] flex-col items-center justify-center px-6 pb-28 pt-28 text-center">
         <Mosaic map={CORNER} className="absolute left-0 top-0 -z-10 w-[34vw] max-w-[260px]" />
-        <Mosaic map={EDGE} className="absolute right-0 top-[11%] -z-10 w-[13vw] max-w-[140px] sm:top-[22%] sm:w-[11vw]" />
-        <Mosaic map={GROUND} className="absolute bottom-0 left-1/2 -z-10 w-[78vw] max-w-[560px] -translate-x-1/2" />
+        <Mosaic map={EDGE} origin="tr" className="absolute right-0 top-[11%] -z-10 w-[13vw] max-w-[140px] sm:top-[22%] sm:w-[11vw]" />
+        <Mosaic map={GROUND} origin="bc" className="absolute bottom-0 left-1/2 -z-10 w-[78vw] max-w-[560px] -translate-x-1/2" />
 
         <h1 className="rise text-[44px] font-semibold leading-none tracking-[-0.04em] sm:text-[80px]">Viral Sachde</h1>
         <p className="rise mt-4 text-[17px] font-medium tracking-tight sm:text-[21px]">
@@ -63,6 +91,7 @@ export default function Home() {
           <a
             href="/resume.pdf"
             download="Viral-Sachde-Resume.pdf"
+            data-pulse
             className="flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-white transition-transform active:scale-95"
           >
             <ArrowDown className="size-4" strokeWidth={2.25} />
@@ -70,6 +99,7 @@ export default function Home() {
           </a>
           <a
             href="#contact"
+            data-pulse
             className="rounded-full bg-fill px-4 py-2.5 text-[14px] font-medium transition-transform active:scale-95"
           >
             Say hello
@@ -120,48 +150,16 @@ export default function Home() {
       </Section>
 
       <Section label="How I work">
-        <ol className="space-y-3">
-          <li className="rounded-[24px] bg-fill p-5">
-            <div className="flex items-center gap-2.5">
-              <span className="grid size-8 place-items-center rounded-[9px] bg-blue text-[15px] font-semibold text-white">?</span>
-              <h3 className="text-[19px] font-semibold tracking-[-0.03em]">Curious first</h3>
-            </div>
-            <p className="mt-2.5 text-[15px] leading-relaxed text-ink/75">
-              I ask why it works the way it does, then I read the source. Understanding the system beats guessing at it.
-            </p>
-          </li>
-          <li className="rounded-[24px] bg-fill p-5">
-            <div className="flex items-center gap-2.5">
-              <span className="grid size-8 place-items-center rounded-[9px] bg-green text-white">
-                <ArrowRight className="size-4 -rotate-45" strokeWidth={2.5} />
-              </span>
-              <h3 className="text-[19px] font-semibold tracking-[-0.03em]">Ship, then iterate</h3>
-            </div>
-            <p className="mt-2.5 text-[15px] leading-relaxed text-ink/75">
-              Production is a feedback loop, not a finish line. v1 goes live; the next versions are what real users teach me.
-            </p>
-            <div className="mt-3.5 flex items-center gap-1.5 text-[12px] font-semibold">
-              {["v1", "v2", "v3"].map((v, i) => (
-                <span key={v} className="flex items-center gap-1.5">
-                  <span className={`rounded-full px-2.5 py-1 ${i === 2 ? "bg-green text-white" : "bg-white text-muted"}`}>{v}</span>
-                  {i < 2 && <span className="h-px w-4 bg-line" />}
-                </span>
-              ))}
-              <span className="ml-1 text-muted">…</span>
-            </div>
-          </li>
-          <li className="rounded-[24px] bg-fill p-5">
-            <div className="flex items-center gap-2.5">
-              <span className="grid size-8 place-items-center rounded-[9px] bg-yellow">
-                <Wrench className="size-4 text-ink" strokeWidth={2.25} />
-              </span>
-              <h3 className="text-[19px] font-semibold tracking-[-0.03em]">Built to be maintained</h3>
-            </div>
-            <p className="mt-2.5 text-[15px] leading-relaxed text-ink/75">
-              Code the next person can change at 2 a.m. Clear boundaries, boring infrastructure, audit trails and tests
-              where they matter.
-            </p>
-          </li>
+        <ol className="space-y-2.5">
+          {steps.map(({ title, line, icon, tint }) => (
+            <li key={title} className="rounded-[22px] bg-fill p-4">
+              <div className="flex items-center gap-2.5">
+                <span className={`grid size-7 shrink-0 place-items-center rounded-[8px] text-white ${tint}`}>{icon}</span>
+                <h3 className="text-[17px] font-semibold tracking-[-0.02em]">{title}</h3>
+              </div>
+              <p className="mt-2 text-[15px] leading-snug text-ink/75">{line}</p>
+            </li>
+          ))}
         </ol>
       </Section>
 

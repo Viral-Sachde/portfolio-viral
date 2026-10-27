@@ -58,6 +58,37 @@ details[open] .chev {
   transform: rotate(45deg);
 }
 
+/* Hero mosaics: pixel build-in on load, colour ripple on interaction */
+.mosaic rect {
+  transform-box: fill-box;
+  transform-origin: center;
+  cursor: pointer;
+}
+.mosaic.is-loading rect {
+  animation: px-in 0.55s var(--ease) both;
+  animation-delay: var(--d);
+}
+.mosaic rect.flip {
+  animation: px-flip 0.8s var(--ease) both;
+  animation-delay: var(--w);
+}
+@media (hover: hover) {
+  .mosaic rect {
+    transition: fill 0.25s;
+  }
+  .mosaic rect:hover {
+    fill: var(--alt);
+  }
+}
+
+@keyframes px-in {
+  from { opacity: 0; transform: scale(0.2); }
+}
+@keyframes px-flip {
+  35% { fill: var(--alt); transform: scale(0.78); }
+  70% { fill: var(--alt); transform: none; }
+}
+
 /* Hero entrance */
 .rise {
   animation: rise 0.9s var(--ease) both;
@@ -110,9 +141,29 @@ details[open] .chev {
 .scroll-blur.is-hidden {
   opacity: 0;
 }
-.scroll-blur > div {
+.scroll-blur > div:not(.scroll-hint) {
   position: absolute;
   inset: 0;
+}
+
+/* Scroll hint pill sitting inside the blur until the visitor starts scrolling */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(22px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.scroll-hint.is-gone {
+  opacity: 0;
+  transform: translate(-50%, 8px);
+}
+.scroll-hint svg {
+  animation: nudge 1.6s var(--ease) infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: none; }
+  50% { transform: translateY(3px); }
 }
 .scroll-blur > div:nth-child(1) { --b: 0.5px; --m: transparent 0%, #000 16%, #000 33%, transparent 50%; }
 .scroll-blur > div:nth-child(2) { --b: 1px; --m: transparent 16%, #000 33%, #000 50%, transparent 66%; }
@@ -120,15 +171,31 @@ details[open] .chev {
 .scroll-blur > div:nth-child(4) { --b: 4px; --m: transparent 50%, #000 66%, #000 83%, transparent 100%; }
 .scroll-blur > div:nth-child(5) { --b: 8px; --m: transparent 66%, #000 83%, #000 100%; }
 .scroll-blur > div:nth-child(6) { --b: 16px; --m: transparent 83%, #000 100%; }
-.scroll-blur > div {
+.scroll-blur > div:not(.scroll-hint) {
   -webkit-backdrop-filter: blur(var(--b));
   backdrop-filter: blur(var(--b));
   -webkit-mask-image: linear-gradient(to bottom, var(--m));
   mask-image: linear-gradient(to bottom, var(--m));
 }
 
+/* Phones get a taller, heavier blur so the "more below" cue is unmissable */
+@media (max-width: 639px) {
+  .scroll-blur {
+    height: calc(150px + env(safe-area-inset-bottom));
+    background: linear-gradient(to bottom, rgb(255 255 255 / 0), rgb(255 255 255 / 0.85));
+  }
+  .scroll-blur > div:nth-child(1) { --b: 1px; }
+  .scroll-blur > div:nth-child(2) { --b: 2px; }
+  .scroll-blur > div:nth-child(3) { --b: 4px; }
+  .scroll-blur > div:nth-child(4) { --b: 8px; }
+  .scroll-blur > div:nth-child(5) { --b: 16px; }
+  .scroll-blur > div:nth-child(6) { --b: 28px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rise { animation: none; }
+  .mosaic rect { animation: none !important; }
+  .scroll-hint svg { animation: none; }
   .reveal,
   .board .cell {
     opacity: 1;

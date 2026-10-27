@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { mulberry32 } from "@/lib/random";
 import InView from "./InView";
-import { palette } from "./Mosaic";
+import { palette } from "@/lib/mosaic";
 
 const COLS = 24;
 const ROWS = 16;

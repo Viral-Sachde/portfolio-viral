@@ -1,5 +1,5 @@
 import type { Preview } from "@/lib/content";
-import { palette } from "./Mosaic";
+import { palette } from "@/lib/mosaic";
 
 // Phone-framed project preview with an illustrated screen per project.
 export default function PhonePreview({ preview, title }: { preview: Preview; title: string }) {

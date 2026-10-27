@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import CursorPixel from "@/components/CursorPixel";
 import "./globals.css";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <style>{`.reveal,.board .cell{opacity:1;transform:none}`}</style>
         </noscript>
         {children}
+        <CursorPixel />
       </body>
     </html>
   );

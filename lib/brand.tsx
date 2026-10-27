@@ -1,4 +1,4 @@
-import { palette } from "@/components/Mosaic";
+import { palette } from "@/lib/mosaic";
 
 // Square mosaic in the hero's style (blues, yellows, greens, white gaps), used as the favicon, Apple icon and social card mark.
 const MARK = [
