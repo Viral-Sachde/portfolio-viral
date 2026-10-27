@@ -1,62 +1,37 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/Header";
-import BlobProvider from "@/components/ui/BlobProvider";
-import localFont from "next/font/local";
-import Aurora from "@/components/Backgrounds/Aurora/Aurora";
-import ClickSpark from "@/components/Animations/ClickSpark/ClickSpark";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-const cals = localFont({
-  src: "./fonts/CalSans-SemiBold.woff2",
-  variable: "--font-cals",
-});
+const sans = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
+const description =
+  "Forward Deployed / Solutions Engineer, Full Stack + AI. I ship products end to end and add LLM features where they actually help.";
 
 export const metadata: Metadata = {
-  title: "Portfolio | Viral Sachde",
-  description: "Personal portfolio website",
+  metadataBase: new URL("https://viral-sachde.vercel.app"),
+  title: { default: "Viral Sachde · Forward Deployed Engineer · Full Stack + AI", template: "%s · Viral Sachde" },
+  description,
+  applicationName: "Viral Sachde",
+  authors: [{ name: "Viral Sachde", url: "https://github.com/Viral-Sachde" }],
+  openGraph: { type: "website", title: "Viral Sachde · Full Stack + AI", description, siteName: "Viral Sachde" },
+  twitter: { card: "summary_large_image", title: "Viral Sachde · Full Stack + AI", description, creator: "@viralpullls" },
+  appleWebApp: { title: "Viral Sachde", statusBarStyle: "default" },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  colorScheme: "light",
+  viewportFit: "cover",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${cals.variable} overflow-x-hidden`}>
-
-        <ClickSpark
-          sparkColor='#fff'
-          sparkSize={18}
-          sparkRadius={40}
-          sparkCount={8}
-          duration={400}
-        >
-          {/* Your content here */}
-          <BlobProvider />
-          <Aurora
-            colorStops={["#00d8ff", "#7cff67", "#9370d8"]}
-            blend={1}
-            amplitude={1.2}
-            speed={0.8}
-          />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            {children}
-          </ThemeProvider>
-        </ClickSpark>
-
+    <html lang="en" className={sans.variable}>
+      <body>
+        <noscript>
+          <style>{`.reveal,.board .cell{opacity:1;transform:none}`}</style>
+        </noscript>
+        {children}
       </body>
     </html>
   );
