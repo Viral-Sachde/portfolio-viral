@@ -11,7 +11,7 @@ const S = 10;
 const PAINT = [palette.b, palette.g, palette.y, palette.n, palette.d];
 
 type Glyph = "square" | "ring" | "x";
-type Cell = { x: number; y: number; glyph: Glyph; color: string; delay: number };
+type Cell = { x: number; y: number; glyph: Glyph; color: string };
 
 function buildCells(): Cell[] {
   const rand = mulberry32(2026);
@@ -43,7 +43,7 @@ function buildCells(): Cell[] {
         color = r > 0.88 ? palette.d : palette.g;
       }
 
-      cells.push({ x, y, glyph, color, delay: Math.round((x + y * 0.6) * 18) });
+      cells.push({ x, y, glyph, color });
     }
   }
   return cells;
@@ -60,7 +60,12 @@ export default function Board() {
 
   return (
     <InView className="board">
-      <svg viewBox={`0 0 ${COLS * S} ${ROWS * S}`} className="block w-full touch-manipulation select-none">
+      <svg
+        viewBox={`0 0 ${COLS * S} ${ROWS * S}`}
+        role="img"
+        aria-label="Decorative pixel board you can tap to recolour"
+        className="block w-full touch-manipulation select-none"
+      >
         {cells.map((cell, i) => {
           const x = cell.x * S;
           const y = cell.y * S;
@@ -70,8 +75,7 @@ export default function Board() {
           return (
             <g
               key={i}
-              className="cell cursor-pointer"
-              style={{ "--d": `${cell.delay}ms` } as React.CSSProperties}
+              className="cursor-pointer"
               onClick={() => tap(i)}
             >
               <rect x={x} y={y} width={S} height={S} fill="transparent" />

@@ -23,8 +23,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const next = articles[(index + 1) % articles.length];
 
   return (
-    <main className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
-      <Link href="/writing" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-blue">
+    <main id="main" className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
+      <Link href="/writing" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-link">
         <ChevronLeft className="size-5" strokeWidth={2.25} />
         Writing
       </Link>
@@ -61,7 +61,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <span className="text-[12px] font-medium text-muted">Next</span>
           <div className="mt-0.5 text-[17px] font-semibold tracking-[-0.02em]">{next.title}</div>
         </div>
-        <ArrowRight className="size-5 shrink-0 text-blue transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />
+        <ArrowRight className="size-5 shrink-0 text-link transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />
       </Link>
       <ScrollBlur />
     </main>

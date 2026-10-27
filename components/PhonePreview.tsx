@@ -71,14 +71,14 @@ function Flow() {
       <div className="mt-5 flex flex-col">
         <Node label="Draft" color="#fff" />
         {line}
-        <Node label="Review" color={palette.b} dark />
+        <Node label="Review" color={palette.n} dark />
         {line}
         <div className="grid grid-cols-2 gap-1.5">
-          <Node label="Approve" color={palette.g} dark />
+          <Node label="Approve" color={palette.g} />
           <Node label="Edit" color={palette.y} />
         </div>
         {line}
-        <Node label="Published" color={palette.n} dark />
+        <Node label="Published" color={palette.d} dark />
       </div>
       <div className="mt-auto mb-5 space-y-1.5">
         {[78, 64, 70].map((w, i) => (
@@ -118,7 +118,7 @@ function Cron() {
           </li>
         ))}
       </ol>
-      <div className="mt-auto mb-5 rounded-xl bg-green/15 p-2.5 text-center text-[11px] font-semibold text-green-deep">
+      <div className="mt-auto mb-5 rounded-xl bg-green/15 p-2.5 text-center text-[11px] font-semibold text-ok">
         ✓ Posted, no hands
       </div>
     </div>
@@ -133,13 +133,13 @@ function Chat() {
         <span className="grid size-6 place-items-center rounded-full bg-white/20 text-[10px] font-bold">A</span>
         <div className="leading-tight">
           <div className="text-[11px] font-semibold">Acme Sales</div>
-          <div className="text-[9px] opacity-80">online</div>
+          <div className="text-[9px]">online</div>
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-1.5 overflow-hidden px-2.5 pt-2.5">
         <div className={`${bubble} self-start bg-white`}>Hi! Pricing for 50 seats?</div>
         <div className={`${bubble} self-end bg-[#D9FDD3]`}>
-          <div className="mb-0.5 text-[8.5px] font-semibold" style={{ color: palette.d }}>✨ AI draft</div>
+          <div className="mb-0.5 text-[8.5px] font-semibold text-ok">✨ AI draft</div>
           Quote sent. Demo at 11 tomorrow?
         </div>
         <div className={`${bubble} self-start bg-white`}>Works 👍</div>
@@ -155,10 +155,10 @@ function Chat() {
 function Bday() {
   return (
     <div className="relative flex h-full flex-col items-center bg-[#1E4D2B] px-3 pt-12 text-white">
-      <div className="text-[10px] font-medium opacity-70">Thursday</div>
+      <div className="text-[10px] font-medium">Thursday</div>
       <div className="text-[44px] font-semibold leading-none tracking-[-0.04em]">12:00</div>
       <div className="mt-6 w-full rounded-[14px] bg-white/90 p-2.5 text-ink shadow-lg backdrop-blur">
-        <div className="flex items-center gap-1.5 text-[9px] font-semibold text-muted">
+        <div className="flex items-center gap-1.5 text-[9px] font-semibold text-ink/80">
           <span className="grid size-3.5 place-items-center rounded-[4px] bg-[#E3F988] text-[8px]">🎉</span>
           BLOOP · now
         </div>
@@ -166,7 +166,7 @@ function Bday() {
         <div className="text-[10px] leading-snug text-ink/70">Be the first to wish. Tap for a hype one.</div>
       </div>
       <div className="mt-2 w-full rounded-[14px] bg-white/25 p-2.5">
-        <div className="text-[9px] font-semibold opacity-80">11:55 PM · heads-up</div>
+        <div className="text-[9px] font-semibold">11:55 PM · heads-up</div>
         <div className="mt-0.5 h-1.5 w-3/4 rounded-full bg-white/40" />
       </div>
       <div className="mt-auto mb-5 flex gap-1.5">
@@ -191,7 +191,7 @@ function Extension() {
       <div className="mt-2.5 rounded-[14px] bg-white p-2.5 shadow-[0_6px_20px_rgb(0_0_0/0.08)]">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-semibold tracking-tight">Images</span>
-          <span className="rounded-full bg-blue/10 px-1.5 py-0.5 text-[9px] font-semibold text-blue">42</span>
+          <span className="rounded-full bg-blue px-1.5 py-0.5 text-[9px] font-semibold text-white">42</span>
         </div>
         <div className="mt-2 grid grid-cols-3 gap-1">
           {tiles.map((c, i) => (
@@ -234,7 +234,7 @@ function Brat() {
         {[
           ["Brat", "#8ACE00", "text-black"],
           ["Cyber", "#00E5FF", "text-black"],
-          ["Sunset", "#FF7A59", "text-white"],
+          ["Sunset", "#FF7A59", "text-black"],
         ].map(([t, c, fg], i) => (
           <span key={t} className={`flex-1 rounded-full py-1 text-center text-[9px] font-semibold ${fg} ${i === 0 ? "ring-2 ring-ink/80" : ""}`} style={{ background: c }}>
             {t}

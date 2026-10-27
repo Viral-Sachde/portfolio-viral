@@ -11,7 +11,7 @@ export const palette: Record<string, string> = {
 
 // Fixed hex values for generated images (favicon, social card), which can't read CSS variables.
 export const paletteHex: Record<string, string> = {
-  b: "#0A84FF",
+  b: "#0071E3",
   n: "#1C3AA9",
   g: "#34C759",
   d: "#1A7F37",

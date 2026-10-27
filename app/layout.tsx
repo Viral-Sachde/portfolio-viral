@@ -21,20 +21,20 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-  colorScheme: "light dark",
+  themeColor: "#ffffff",
+  colorScheme: "light",
   viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={sans.variable}>
+    <html lang="en" className={sans.variable} data-mode="light">
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <noscript>
-          <style>{`.reveal,.board .cell{opacity:1;transform:none}`}</style>
+          <style>{`.reveal{opacity:1;transform:none}.board svg{clip-path:none}`}</style>
         </noscript>
         {children}
         <CursorPixel />

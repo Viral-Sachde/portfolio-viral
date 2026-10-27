@@ -13,9 +13,10 @@ export default function ProjectPhone({ project, className = "" }: { project: Pro
         <div>
           <h3 className="text-[16px] font-semibold leading-tight tracking-[-0.02em]">{project.title}</h3>
           <p className="mt-0.5 text-[12px] text-muted">{project.platforms}</p>
+          {project.href && <span className="sr-only">(opens in new tab)</span>}
         </div>
         {project.href ? (
-          <ArrowUpRight className="size-4 shrink-0 text-muted transition-colors group-hover:text-blue" strokeWidth={2.25} />
+          <ArrowUpRight className="size-4 shrink-0 text-muted transition-colors group-hover:text-link" strokeWidth={2.25} />
         ) : (
           <Lock className="size-3.5 shrink-0 text-muted" strokeWidth={2.25} />
         )}

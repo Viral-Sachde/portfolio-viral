@@ -12,7 +12,7 @@ export default function StackPicker() {
 
   return (
     <div>
-      <div className="relative flex rounded-[10px] bg-fill p-[3px]">
+      <div className="relative flex rounded-[10px] bg-fill p-[3px]" role="group" aria-label="Filter stack">
         <span
           className="absolute inset-y-[3px] left-[3px] rounded-[8px] bg-paper shadow-[0_1px_3px_rgb(0_0_0/0.12)] transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
           style={{ width: `calc((100% - 6px) / ${tabs.length})`, transform: `translateX(${index * 100}%)` }}
@@ -21,6 +21,7 @@ export default function StackPicker() {
           <button
             key={t.key}
             onClick={() => setActive(t.key)}
+            aria-pressed={active === t.key}
             className={`relative z-10 flex-1 py-1.5 text-[13px] font-medium transition-colors ${
               active === t.key ? "text-ink" : "text-muted"
             }`}
