@@ -29,17 +29,18 @@ export default function ContactForm() {
     } catch {}
   };
 
-  const field = "w-full bg-transparent py-3.5 text-[16px] outline-none placeholder:text-muted/70";
+  const field = "w-full bg-transparent py-3.5 text-[16px] outline-none placeholder:text-muted";
 
   return (
     <form onSubmit={send}>
       <div className="text-[13px] font-medium text-muted">I&apos;m reaching out about</div>
-      <div className="mt-2.5 flex flex-wrap gap-2">
+      <div className="mt-2.5 flex flex-wrap gap-2" role="group" aria-label="Reason for reaching out">
         {intents.map((i) => (
           <button
             key={i}
             type="button"
             onClick={() => setIntent(i)}
+            aria-pressed={intent === i}
             className={`rounded-full px-3.5 py-2 text-[14px] font-medium transition-all active:scale-95 ${
               intent === i ? "bg-blue text-white" : "bg-fill text-ink"
             }`}
@@ -50,14 +51,15 @@ export default function ContactForm() {
       </div>
 
       <div className="mt-5 rounded-[22px] bg-fill px-4">
-        <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" className={`${field} border-b border-line`} />
-        <input type="email" value={from} onChange={(e) => setFrom(e.target.value)} placeholder="Your email (optional)" autoComplete="email" className={`${field} border-b border-line`} />
+        <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" aria-label="Your name" autoComplete="name" className={`${field} border-b border-line`} />
+        <input type="email" value={from} onChange={(e) => setFrom(e.target.value)} placeholder="Your email (optional)" aria-label="Your email (optional)" autoComplete="email" className={`${field} border-b border-line`} />
         <textarea
           required
           rows={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={intent === "Just hi" ? "Say hi…" : "What are you building?"}
+          aria-label="Message"
           className={`${field} resize-none`}
         />
       </div>
@@ -76,10 +78,10 @@ export default function ContactForm() {
           aria-label="Copy email address"
           className="grid size-[50px] shrink-0 place-items-center rounded-full bg-fill transition-transform active:scale-95"
         >
-          {copied ? <Check className="size-[18px] text-green-deep" strokeWidth={2.5} /> : <Copy className="size-[18px]" strokeWidth={2} />}
+          {copied ? <Check className="size-[18px] text-ok" strokeWidth={2.5} /> : <Copy className="size-[18px]" strokeWidth={2} />}
         </button>
       </div>
-      <p className="mt-2.5 h-4 text-center text-[12px] text-muted">{copied ? "Email copied" : "Opens your mail app with everything filled in."}</p>
+      <p aria-live="polite" className="mt-2.5 h-4 text-center text-[12px] text-muted">{copied ? "Email copied" : "Opens your mail app with everything filled in."}</p>
     </form>
   );
 }

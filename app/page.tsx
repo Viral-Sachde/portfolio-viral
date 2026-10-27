@@ -5,6 +5,7 @@ import { GithubIcon, LinkedinIcon, XIcon } from "@/components/BrandIcons";
 import Clock from "@/components/Clock";
 import ConsoleHello from "@/components/ConsoleHello";
 import ContactForm from "@/components/ContactForm";
+import FooterLine from "@/components/FooterLine";
 import Cover from "@/components/Cover";
 import InView from "@/components/InView";
 import Mosaic from "@/components/Mosaic";
@@ -20,7 +21,7 @@ const links = [
   { label: "GitHub", detail: "Viral-Sachde", href: "https://github.com/Viral-Sachde", icon: GithubIcon, tint: "bg-black" },
   { label: "LinkedIn", detail: "viral-sachde", href: "https://in.linkedin.com/in/viral-sachde-18664b24b", icon: LinkedinIcon, tint: "bg-blue-deep" },
   { label: "X", detail: "@viralpullls", href: "https://x.com/viralpullls", icon: XIcon, tint: "bg-black" },
-  { label: "Résumé", detail: "Download PDF", href: "/resume.pdf", icon: FileText, tint: "bg-green", download: true },
+  { label: "Résumé", detail: "Download PDF", href: "/resume.pdf", icon: FileText, tint: "bg-green-deep", download: true },
 ];
 
 const steps = [
@@ -73,7 +74,7 @@ function Widget({ className, children }: { className: string; children: React.Re
 
 export default function Home() {
   return (
-    <main className="overflow-x-clip">
+    <main id="main" className="overflow-x-clip">
       <header className="relative isolate flex min-h-[88svh] flex-col items-center justify-center px-6 pb-28 pt-28 text-center">
         <Mosaic map={CORNER} className="absolute left-0 top-0 -z-10 w-[34vw] max-w-[260px]" />
         <Mosaic map={EDGE} origin="tr" className="absolute right-0 top-[11%] -z-10 w-[13vw] max-w-[140px] sm:top-[22%] sm:w-[11vw]" />
@@ -117,7 +118,7 @@ export default function Home() {
                     <div className="flex items-center gap-2 font-semibold tracking-tight">
                       {company}
                       {now && (
-                        <span className="rounded-full bg-green/15 px-2 py-0.5 text-[11px] font-semibold text-green-deep">
+                        <span className="rounded-full bg-green/15 px-2 py-0.5 text-[11px] font-semibold text-ok">
                           Now
                         </span>
                       )}
@@ -188,19 +189,19 @@ export default function Home() {
       <Section label="At a glance">
         <div className="grid grid-cols-2 gap-2.5">
           <Widget className="bg-blue text-white">
-            <span className="text-[12px] font-medium opacity-80">Ahmedabad</span>
+            <span className="text-[12px] font-medium">Ahmedabad</span>
             <div>
               <div className="text-[28px] font-semibold leading-none tracking-[-0.04em]">
                 <Clock />
               </div>
-              <span className="text-[11px] opacity-80">IST · UTC+5:30</span>
+              <span className="text-[11px]">IST · UTC+5:30</span>
             </div>
           </Widget>
-          <Widget className="bg-green text-white">
-            <span className="text-[12px] font-medium opacity-80">Shipping</span>
+          <Widget className="bg-green text-black">
+            <span className="text-[12px] font-medium opacity-75">Shipping</span>
             <div>
               <div className="text-[28px] font-semibold leading-none tracking-[-0.04em]">2+ yrs</div>
-              <span className="text-[11px] opacity-80">production software</span>
+              <span className="text-[11px] opacity-75">production software</span>
             </div>
           </Widget>
           <Widget className="bg-yellow text-black">
@@ -211,10 +212,10 @@ export default function Home() {
             </div>
           </Widget>
           <Widget className="bg-blue-deep text-white">
-            <span className="text-[12px] font-medium opacity-80">Platforms</span>
+            <span className="text-[12px] font-medium">Platforms</span>
             <div>
               <div className="text-[28px] font-semibold leading-none tracking-[-0.04em]">3</div>
-              <span className="text-[11px] opacity-80">web, iOS and Android</span>
+              <span className="text-[11px]">web, iOS and Android</span>
             </div>
           </Widget>
           <div className="col-span-2 flex items-center justify-between rounded-[18px] bg-fill px-3.5 py-3">
@@ -282,7 +283,8 @@ export default function Home() {
                 <span className="flex min-w-0 flex-1 items-center gap-3 border-b border-line py-3.5 pr-4 group-last/row:border-0">
                   <span className="flex-1 text-[16px]">{label}</span>
                   <span className="truncate text-[15px] text-muted">{detail}</span>
-                  <ChevronRight className="size-4 shrink-0 text-muted/60" strokeWidth={2.5} />
+                  {href.startsWith("http") && <span className="sr-only">(opens in new tab)</span>}
+                  <ChevronRight aria-hidden className="size-4 shrink-0 text-muted/60" strokeWidth={2.5} />
                 </span>
               </a>
             </li>
@@ -290,8 +292,9 @@ export default function Home() {
         </ul>
       </Section>
 
-      <footer className="px-6 pb-16 pt-10 text-center text-[13px] text-muted">
-        © {new Date().getFullYear()} Viral Sachde
+      <footer className="space-y-4 px-6 pb-20 pt-10 text-center">
+        <FooterLine />
+        <p className="text-[13px] text-muted">© {new Date().getFullYear()} Viral Sachde</p>
       </footer>
 
       <ScrollBlur />

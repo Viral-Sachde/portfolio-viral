@@ -4,12 +4,14 @@
   --font-sans: var(--font-inter), system-ui, sans-serif;
 
   --color-ink: #0a0a0a;
-  --color-muted: #6e6e73;
+  --color-muted: #636366;
   --color-line: #e5e5ea;
   --color-fill: #f2f2f7;
   --color-paper: #ffffff;
+  --color-link: var(--color-blue);
+  --color-ok: #146c2e;
 
-  --color-blue: #0a84ff;
+  --color-blue: #0071e3;
   --color-blue-deep: #1c3aa9;
 
   --color-green: #34c759;
@@ -33,6 +35,8 @@
     --color-line: #2c2c2e;
     --color-fill: #1c1c1e;
     --color-paper: #000000;
+    --color-link: #4da3ff;
+    --color-ok: #30d158;
   }
 }
 :root[data-mode="dark"] {
@@ -42,16 +46,44 @@
   --color-line: #2c2c2e;
   --color-fill: #1c1c1e;
   --color-paper: #000000;
+  --color-link: #4da3ff;
+  --color-ok: #30d158;
+}
+
+/* High contrast: from the panel switch, or the system setting unless switched off */
+:root[data-contrast="more"] {
+  --color-ink: #000000;
+  --color-muted: #3a3a3c;
+  --color-line: #8e8e93;
+  --color-ok: #0b4f1f;
+}
+:root[data-contrast="more"][data-mode="dark"] {
+  --color-ink: #ffffff;
+  --color-muted: #e5e5ea;
+  --color-line: #8e8e93;
+  --color-ok: #6ee787;
+  --color-link: #8cc4ff;
+}
+@media (prefers-contrast: more) {
+  :root:not([data-contrast="normal"]) {
+    --color-ink: #000000;
+    --color-muted: #3a3a3c;
+    --color-line: #8e8e93;
+  }
+}
+:root[data-contrast="more"] [class*="text-ink/"] {
+  color: var(--color-ink);
 }
 
 /* Phone mockups always render as light screens, like real screenshots */
 .light-scope {
   color-scheme: light;
   --color-ink: #0a0a0a;
-  --color-muted: #6e6e73;
+  --color-muted: #636366;
   --color-line: #e5e5ea;
   --color-fill: #f2f2f7;
   --color-paper: #ffffff;
+  --color-ok: #146c2e;
   color: var(--color-ink);
 }
 
@@ -97,10 +129,9 @@ details[open] .chev {
   transform-origin: center;
   cursor: pointer;
 }
-.mosaic.is-loading rect {
-  animation: px-in 0.55s var(--ease) both;
-  animation-delay: var(--d);
-}
+.mosaic.reveal-tl { animation: wipe-tl 0.9s steps(8, end) both; }
+.mosaic.reveal-tr { animation: wipe-tr 0.9s steps(8, end) 0.1s both; }
+.mosaic.reveal-bc { animation: wipe-bc 0.9s steps(8, end) 0.2s both; }
 .mosaic rect.flip {
   animation: px-flip 0.8s var(--ease) both;
   animation-delay: var(--w);
@@ -114,8 +145,17 @@ details[open] .chev {
   }
 }
 
-@keyframes px-in {
-  from { opacity: 0; transform: scale(0.2); }
+@keyframes wipe-tl {
+  from { clip-path: circle(0% at 0 0); }
+  to { clip-path: circle(150% at 0 0); }
+}
+@keyframes wipe-tr {
+  from { clip-path: circle(0% at 100% 0); }
+  to { clip-path: circle(150% at 100% 0); }
+}
+@keyframes wipe-bc {
+  from { clip-path: circle(0% at 50% 100%); }
+  to { clip-path: circle(150% at 50% 100%); }
 }
 @keyframes px-flip {
   35% { fill: var(--alt); transform: scale(0.78); }
@@ -124,6 +164,29 @@ details[open] .chev {
 
 @keyframes pop {
   from { opacity: 0; transform: scale(0.9) translateY(6px); }
+}
+
+/* Accessibility: visible keyboard focus everywhere, skip link */
+:focus-visible {
+  outline: 2.5px solid var(--color-blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 16px;
 }
 
 /* Hero entrance */
@@ -150,18 +213,15 @@ details[open] .chev {
   transform: none;
 }
 
-/* Board cells pop in, staggered by --d */
-.board .cell {
-  opacity: 0;
-  transform: scale(0.3);
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.4s var(--ease), transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
-  transition-delay: var(--d);
+/* Board reveals with one stepped wipe from the bottom once in view */
+.board svg {
+  clip-path: inset(100% 0 0 0);
 }
-.board.in .cell {
-  opacity: 1;
-  transform: none;
+.board.in svg {
+  animation: board-wipe 1s steps(16, end) forwards;
+}
+@keyframes board-wipe {
+  to { clip-path: inset(0 0 0 0); }
 }
 
 /* Bottom progressive blur: stacked layers, each blurring a band a bit harder */
@@ -170,7 +230,7 @@ details[open] .chev {
   inset-inline: 0;
   bottom: 0;
   z-index: 40;
-  height: calc(120px + env(safe-area-inset-bottom));
+  height: calc(88px + env(safe-area-inset-bottom));
   pointer-events: none;
   transition: opacity 0.5s var(--ease);
   background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-paper) 70%, transparent));
@@ -187,7 +247,7 @@ details[open] .chev {
 .scroll-hint {
   position: absolute;
   left: 50%;
-  bottom: calc(22px + env(safe-area-inset-bottom));
+  bottom: calc(14px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
 }
@@ -215,26 +275,38 @@ details[open] .chev {
   mask-image: linear-gradient(to bottom, var(--m));
 }
 
-/* Phones get a taller, heavier blur so the "more below" cue is unmissable */
+/* Phones: three light layers instead of six, cheaper to composite while scrolling */
 @media (max-width: 639px) {
   .scroll-blur {
-    height: calc(150px + env(safe-area-inset-bottom));
-    background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-paper) 85%, transparent));
+    height: calc(72px + env(safe-area-inset-bottom));
   }
-  .scroll-blur > div:nth-child(1) { --b: 1px; }
-  .scroll-blur > div:nth-child(2) { --b: 2px; }
-  .scroll-blur > div:nth-child(3) { --b: 4px; }
-  .scroll-blur > div:nth-child(4) { --b: 8px; }
-  .scroll-blur > div:nth-child(5) { --b: 16px; }
-  .scroll-blur > div:nth-child(6) { --b: 28px; }
+  .scroll-blur > div:nth-child(-n + 3) { display: none; }
+  .scroll-blur > div:nth-child(4) { --b: 1px; --m: transparent 0%, #000 35%, #000 55%, transparent 80%; }
+  .scroll-blur > div:nth-child(5) { --b: 3px; --m: transparent 35%, #000 65%, #000 100%; }
+  .scroll-blur > div:nth-child(6) { --b: 6px; --m: transparent 60%, #000 100%; }
+}
+
+/* Reduce motion: system setting or the panel switch */
+:root[data-motion="reduce"] *,
+:root[data-motion="reduce"] *::before,
+:root[data-motion="reduce"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+:root[data-motion="reduce"] .reveal,
+:root[data-motion="reduce"] .board svg {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .rise { animation: none; }
+  .mosaic { animation: none !important; }
   .mosaic rect { animation: none !important; }
+  .board svg { clip-path: none; animation: none; }
   .scroll-hint svg { animation: none; }
-  .reveal,
-  .board .cell {
+  .reveal {
     opacity: 1;
     transform: none;
     transition: none;

@@ -9,8 +9,8 @@ export const metadata: Metadata = { title: "Writing" };
 
 export default function WritingPage() {
   return (
-    <main className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
-      <Link href="/" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-blue">
+    <main id="main" className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
+      <Link href="/" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-link">
         <ChevronLeft className="size-5" strokeWidth={2.25} />
         Viral Sachde
       </Link>

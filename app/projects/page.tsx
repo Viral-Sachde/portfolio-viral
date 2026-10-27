@@ -9,8 +9,8 @@ export const metadata: Metadata = { title: "Projects" };
 
 export default function ProjectsPage() {
   return (
-    <main className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
-      <Link href="/" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-blue">
+    <main id="main" className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
+      <Link href="/" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-link">
         <ChevronLeft className="size-5" strokeWidth={2.25} />
         Viral Sachde
       </Link>
@@ -36,6 +36,7 @@ export default function ProjectsPage() {
                   className="mt-4 inline-flex items-center gap-1 rounded-full bg-ink px-3.5 py-2 text-[13px] font-medium text-paper transition-transform active:scale-95"
                 >
                   Open
+                  <span className="sr-only"> {p.title} (opens in new tab)</span>
                   <ArrowUpRight className="size-3.5" strokeWidth={2.5} />
                 </a>
               ) : (

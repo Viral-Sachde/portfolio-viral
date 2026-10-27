@@ -2,16 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Check, Monitor, Moon, Sun, X } from "lucide-react";
-import { PRESETS, applyMode, applyTheme, type Mode, type Theme } from "@/lib/theme";
+import { PRESETS, applyFlag, applyMode, applyTheme, type Mode, type Theme } from "@/lib/theme";
 
 const DEFAULT: Theme = { preset: "classic" };
 
 // Floating bottom-right button: light/dark mode plus palette presets or custom picks.
-// Choices last for the visit only; a refresh returns to Classic and the system mode.
+// Choices last for the visit only; a refresh returns to Classic in light mode.
 export default function ThemePicker() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>(DEFAULT);
-  const [mode, setMode] = useState<Mode>("auto");
+  const [mode, setMode] = useState<Mode>("light");
+  const [colourBlind, setColourBlind] = useState(false);
+  const [contrast, setContrast] = useState(false);
+  const [motion, setMotion] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,20 +32,32 @@ export default function ThemePicker() {
 
   const choose = (next: Theme) => {
     setTheme(next);
-    applyTheme(next);
+    applyTheme(next, colourBlind);
+  };
+  const toggleColourBlind = (on: boolean) => {
+    setColourBlind(on);
+    applyTheme(theme, on);
+  };
+  const toggleContrast = (on: boolean) => {
+    setContrast(on);
+    applyFlag("contrast", on ? "more" : null);
+  };
+  const toggleMotion = (on: boolean) => {
+    setMotion(on);
+    applyFlag("motion", on ? "reduce" : null);
   };
   const chooseMode = (next: Mode) => {
     setMode(next);
     applyMode(next);
   };
 
-  const custom = "custom" in theme ? theme.custom : { b: "#0A84FF", g: "#34C759", y: "#FFD60A" };
+  const custom = "custom" in theme ? theme.custom : { b: "#0071E3", g: "#34C759", y: "#FFD60A" };
   const setCustom = (key: "b" | "g" | "y", value: string) => choose({ custom: { ...custom, [key]: value } });
 
   return (
-    <div ref={panel} className="fixed bottom-[calc(16px+env(safe-area-inset-bottom))] right-4 z-[45]">
+    <div ref={panel} className="fixed bottom-[calc(14px+env(safe-area-inset-bottom))] right-3.5 z-[45] sm:bottom-[calc(16px+env(safe-area-inset-bottom))] sm:right-4">
       {open && (
-        <div className="absolute bottom-14 right-0 w-[272px] origin-bottom-right animate-[pop_0.25s_var(--ease)] rounded-[22px] bg-paper/95 p-4 shadow-[0_12px_40px_-8px_rgb(0_0_0/0.25)] backdrop-blur-xl">
+        <div role="dialog" aria-label="Colours and display mode" className="absolute bottom-12 right-0 max-h-[calc(100svh-90px)] w-[284px] overflow-y-auto sm:bottom-14 origin-bottom-right animate-[pop_0.25s_var(--ease)] rounded-[22px] bg-paper/95 p-4 shadow-[0_12px_40px_-8px_rgb(0_0_0/0.25)] backdrop-blur-xl">
           <div className="flex items-center justify-between">
             <span className="text-[15px] font-semibold tracking-tight">Colours</span>
             <button onClick={() => setOpen(false)} aria-label="Close" className="grid size-7 place-items-center rounded-full bg-fill">
@@ -61,6 +76,7 @@ export default function ThemePicker() {
               <button
                 key={key}
                 onClick={() => chooseMode(key)}
+                aria-pressed={mode === key}
                 className={`flex items-center justify-center gap-1.5 rounded-[9px] py-1.5 text-[12px] font-medium transition-colors ${
                   mode === key ? "bg-paper text-ink shadow-[0_1px_3px_rgb(0_0_0/0.12)]" : "text-muted"
                 }`}
@@ -71,11 +87,11 @@ export default function ThemePicker() {
             ))}
           </div>
 
-          <div className="mt-4 grid grid-cols-5 gap-2">
+          <div className="mt-4 grid grid-cols-3 gap-x-2 gap-y-3">
             {PRESETS.map((p) => {
               const active = "preset" in theme && theme.preset === p.key;
               return (
-                <button key={p.key} onClick={() => choose({ preset: p.key })} className="flex flex-col items-center gap-1.5" aria-label={p.label}>
+                <button key={p.key} onClick={() => choose({ preset: p.key })} className="flex flex-col items-center gap-1.5" aria-label={p.label === "CB safe" ? "Colour-blind safe" : p.label} aria-pressed={active}>
                   <span className={`grid size-11 grid-cols-2 overflow-hidden rounded-[12px] transition-transform active:scale-90 ${active ? "ring-2 ring-ink ring-offset-2 ring-offset-paper" : ""}`}>
                     {[p.tones.b, p.tones.g, p.tones.y, p.tones.n].map((c, i) => (
                       <span key={i} style={{ background: c }} />
@@ -90,7 +106,7 @@ export default function ThemePicker() {
           <div className="mt-4 border-t border-line pt-3">
             <div className="flex items-center justify-between">
               <span className="text-[13px] font-medium">Custom</span>
-              {"custom" in theme && <Check className="size-4 text-green-deep" strokeWidth={2.5} />}
+              {"custom" in theme && <Check className="size-4 text-ok" strokeWidth={2.5} />}
             </div>
             <div className="mt-2.5 grid grid-cols-3 gap-2">
               {(
@@ -115,9 +131,21 @@ export default function ThemePicker() {
             </div>
           </div>
 
+          <div className="mt-4 border-t border-line pt-3">
+            <span className="text-[13px] font-medium">Accessibility</span>
+            <div className="mt-1.5 divide-y divide-line">
+              <Switch label="Colour-blind safe" hint="Okabe-Ito palette" on={colourBlind} onChange={toggleColourBlind} />
+              <Switch label="High contrast" hint="Darker text and lines" on={contrast} onChange={toggleContrast} />
+              <Switch label="Reduce motion" hint="Stop animations" on={motion} onChange={toggleMotion} />
+            </div>
+          </div>
+
           <button onClick={() => {
+              toggleColourBlind(false);
+              toggleContrast(false);
+              toggleMotion(false);
               choose(DEFAULT);
-              chooseMode("auto");
+              chooseMode("light");
             }} className="mt-3 w-full rounded-full bg-fill py-2 text-[13px] font-medium transition-transform active:scale-[0.98]">
             Reset
           </button>
@@ -129,7 +157,7 @@ export default function ThemePicker() {
         aria-label="Change colours"
         aria-expanded={open}
         data-pulse
-        className="grid size-12 grid-cols-2 gap-[3px] rounded-full bg-paper p-[11px] shadow-[0_6px_24px_-6px_rgb(0_0_0/0.3)] ring-1 ring-ink/10 transition-transform active:scale-90"
+        className="grid size-10 grid-cols-2 gap-[2.5px] rounded-full bg-paper p-[9px] sm:size-12 sm:gap-[3px] sm:p-[11px] shadow-[0_6px_24px_-6px_rgb(0_0_0/0.3)] ring-1 ring-ink/10 transition-transform active:scale-90"
       >
         <span className="rounded-[3px] bg-blue" />
         <span className="rounded-[3px] bg-green" />
@@ -137,5 +165,20 @@ export default function ThemePicker() {
         <span className="rounded-[3px] bg-blue-deep" />
       </button>
     </div>
+  );
+}
+
+// iOS-style switch with a proper switch role for assistive tech.
+function Switch({ label, hint, on, onChange }: { label: string; hint: string; on: boolean; onChange: (on: boolean) => void }) {
+  return (
+    <button role="switch" aria-checked={on} onClick={() => onChange(!on)} className="flex w-full items-center justify-between gap-3 py-2.5 text-left">
+      <span>
+        <span className="block text-[13px]">{label}</span>
+        <span className="block text-[11px] text-muted">{hint}</span>
+      </span>
+      <span className={`relative h-[26px] w-[44px] shrink-0 rounded-full transition-colors ${on ? "bg-ok" : "bg-line"}`}>
+        <span className={`absolute top-[3px] size-5 rounded-full bg-white shadow transition-transform ${on ? "translate-x-[21px]" : "translate-x-[3px]"}`} />
+      </span>
+    </button>
   );
 }

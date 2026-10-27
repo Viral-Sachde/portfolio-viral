@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { palette } from "@/lib/mosaic";
+import { motionReduced } from "@/lib/theme";
 
 const tones = [palette.b, palette.g, palette.y, palette.n];
 
@@ -13,7 +14,6 @@ export default function CursorPixel() {
     const el = ref.current;
     if (!el || !window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 640px)").matches) return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let x = -100, y = -100, tx = -100, ty = -100, frame = 0, tone = 0, overLink = false;
 
     const paint = () => {
@@ -21,8 +21,9 @@ export default function CursorPixel() {
       el.style.width = el.style.height = overLink ? "18px" : "10px";
     };
     const loop = () => {
-      x += (tx - x) * (reduce ? 1 : 0.2);
-      y += (ty - y) * (reduce ? 1 : 0.2);
+      const k = motionReduced() ? 1 : 0.2;
+      x += (tx - x) * k;
+      y += (ty - y) * k;
       el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
       frame = requestAnimationFrame(loop);
     };
@@ -44,6 +45,7 @@ export default function CursorPixel() {
     paint();
     frame = requestAnimationFrame(loop);
     const cycle = setInterval(() => {
+      if (motionReduced()) return;
       tone = (tone + 1) % tones.length;
       paint();
     }, 1000);
