@@ -129,9 +129,13 @@ details[open] .chev {
   transform-origin: center;
   cursor: pointer;
 }
-.mosaic.reveal-tl { animation: wipe-tl 0.9s steps(8, end) both; }
-.mosaic.reveal-tr { animation: wipe-tr 0.9s steps(8, end) 0.1s both; }
-.mosaic.reveal-bc { animation: wipe-bc 0.9s steps(8, end) 0.2s both; }
+/* Big screens: each square pops in, staggered by distance from the mosaic's origin */
+@media (min-width: 640px) and (hover: hover) {
+  .mosaic.is-loading rect {
+    animation: px-in 0.55s var(--ease) both;
+    animation-delay: var(--d);
+  }
+}
 .mosaic rect.flip {
   animation: px-flip 0.8s var(--ease) both;
   animation-delay: var(--w);
@@ -145,17 +149,8 @@ details[open] .chev {
   }
 }
 
-@keyframes wipe-tl {
-  from { clip-path: circle(0% at 0 0); }
-  to { clip-path: circle(150% at 0 0); }
-}
-@keyframes wipe-tr {
-  from { clip-path: circle(0% at 100% 0); }
-  to { clip-path: circle(150% at 100% 0); }
-}
-@keyframes wipe-bc {
-  from { clip-path: circle(0% at 50% 100%); }
-  to { clip-path: circle(150% at 50% 100%); }
+@keyframes px-in {
+  from { opacity: 0; transform: scale(0.2); }
 }
 @keyframes px-flip {
   35% { fill: var(--alt); transform: scale(0.78); }
@@ -284,6 +279,15 @@ details[open] .chev {
   .scroll-blur > div:nth-child(4) { --b: 1px; --m: transparent 0%, #000 35%, #000 55%, transparent 80%; }
   .scroll-blur > div:nth-child(5) { --b: 3px; --m: transparent 35%, #000 65%, #000 100%; }
   .scroll-blur > div:nth-child(6) { --b: 6px; --m: transparent 60%, #000 100%; }
+}
+
+/* Phones and touch screens: mosaics and board show up directly, no reveal wipes */
+@media (max-width: 639px), (hover: none) {
+  .board svg,
+  .board.in svg {
+    clip-path: none;
+    animation: none;
+  }
 }
 
 /* Reduce motion: system setting or the panel switch */

@@ -9,8 +9,8 @@ const ALT: Record<string, string> = { b: "g", n: "b", g: "y", d: "g", y: "b", o:
 
 type Origin = "tl" | "tr" | "bc";
 
-// Interactive pixel mosaic: a stepped wipe reveals it on load (one cheap animation for the
-// whole SVG), taps ripple outward, and controls marked `data-pulse` send a wave through it.
+// Interactive pixel mosaic: on big screens the squares pop in from the origin on load (phones
+// show it instantly), taps ripple outward, and controls marked `data-pulse` send a wave through it.
 // Waves touch the DOM directly so a ripple never re-renders hundreds of rects through React.
 function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Origin; className?: string }) {
   const svg = useRef<SVGSVGElement>(null);
@@ -18,14 +18,24 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
   const height = map.length;
   const start = useMemo(() => ({ tl: [0, 0], tr: [width, 0], bc: [width / 2, height] })[origin], [origin, width, height]);
   const cells = useMemo(
-    () => map.flatMap((row, y) => row.split("").flatMap((c, x) => (palette[c] ? [{ x, y, c }] : []))),
-    [map]
+    () =>
+      map.flatMap((row, y) =>
+        row
+          .split("")
+          .flatMap((c, x) => (palette[c] ? [{ x, y, c, d: Math.round(Math.hypot(x - start[0], y - start[1]) * 38) }] : []))
+      ),
+    [map, start]
   );
 
   useEffect(() => {
     const el = svg.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el) return;
+    // Drop the build-in class once every square has popped in, so later ripples don't replay it.
+    const loaded = window.setTimeout(() => el.classList.remove("is-loading"), Math.max(...cells.map((c) => c.d)) + 700);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => clearTimeout(loaded);
     const rects = Array.from(el.querySelectorAll("rect"));
+    // Phones skip the ambient effects (idle twinkle, CTA pulse) and only ripple on a direct tap.
+    const phone = window.matchMedia("(max-width: 639px), (hover: none)").matches;
     let clear = 0;
     let lastWave = 0;
     let visible = true;
@@ -57,7 +67,7 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
 
     let lastPulse = 0;
     const onPulse = (e: Event) => {
-      if (!(e.target as Element)?.closest?.("[data-pulse]") || Date.now() - lastPulse < 900) return;
+      if (phone || !(e.target as Element)?.closest?.("[data-pulse]") || Date.now() - lastPulse < 900) return;
       lastPulse = Date.now();
       ripple(start[0], start[1], Infinity);
     };
@@ -66,7 +76,7 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
     const io = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting));
     io.observe(el);
     const twinkle = setInterval(() => {
-      if (!visible || document.hidden || Date.now() - lastWave < 2000) return;
+      if (phone || !visible || document.hidden || Date.now() - lastWave < 2000) return;
       const cell = cells[Math.floor(Math.random() * cells.length)];
       ripple(cell.x, cell.y, 0);
     }, 2400 + Math.random() * 1200);
@@ -76,6 +86,7 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
     document.addEventListener("pointerdown", onPulse);
     return () => {
       clearTimeout(clear);
+      clearTimeout(loaded);
       clearInterval(twinkle);
       io.disconnect();
       el.removeEventListener("pointerdown", onTap);
@@ -90,7 +101,7 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
       viewBox={`0 0 ${width} ${height}`}
       shapeRendering="crispEdges"
       aria-hidden
-      className={`mosaic reveal-${origin} ${className ?? ""}`}
+      className={`mosaic is-loading ${className ?? ""}`}
     >
       {cells.map((cell, i) => (
         <rect
@@ -101,7 +112,7 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
           width={1.02}
           height={1.02}
           fill={palette[cell.c]}
-          style={{ "--alt": palette[ALT[cell.c]] } as React.CSSProperties}
+          style={{ "--alt": palette[ALT[cell.c]], "--d": `${cell.d}ms` } as React.CSSProperties}
         />
       ))}
     </svg>
