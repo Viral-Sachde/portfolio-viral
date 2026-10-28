@@ -50,9 +50,15 @@ export const EDGE = [
 ];
 
 export const GROUND = [
-  ".bbbb..n...........g",
-  ".bbbbnnnggggbbbb..gg",
-  ".bbbbbnngggggbbdddd.",
+  "...n..........b.....",
+  "...nb........bb.....",
+  "..bnb...y....bb....g",
+  "..bnb..yy....nbb...g",
+  ".bbnb..yog..nnbb..dg",
+  ".bbbbg.oygg.nbbbd.dg",
+  ".bbbbggnyggdbbbbd.dg",
+  ".bbbbnnnggggbbbbddgg",
+  "bbbbbbnngggggbbddddg",
   "bbbbggoyygggbbbbdddg",
   "nbbbggoyygggggbbbggg",
 ];

@@ -78,7 +78,7 @@ export default function Home() {
       <header className="relative isolate flex min-h-svh flex-col items-center justify-center px-6 pb-28 pt-28 text-center">
         <Mosaic map={CORNER} className="absolute left-0 top-0 -z-10 w-[34vw] max-w-[260px]" />
         <Mosaic map={EDGE} origin="tr" className="absolute right-0 top-[11%] -z-10 w-[13vw] max-w-[140px] sm:top-[22%] sm:w-[11vw]" />
-        <Mosaic map={GROUND} origin="bc" className="absolute bottom-0 left-1/2 -z-10 w-[78vw] max-w-[560px] -translate-x-1/2" />
+        <Mosaic map={GROUND} origin="bc" className="absolute bottom-0 left-1/2 -z-10 max-h-[28svh] w-[78vw] max-w-[560px] -translate-x-1/2" />
 
         <h1 className="rise text-[44px] font-semibold leading-none tracking-[-0.04em] sm:text-[80px]">Viral Sachde</h1>
         <p className="rise mt-4 text-[17px] font-medium tracking-tight sm:text-[21px]">
@@ -90,8 +90,7 @@ export default function Home() {
         </div>
         <div className="rise mt-7 flex items-center gap-2.5">
           <a
-            href="/resume.pdf"
-            download="Viral-Sachde-Resume.pdf"
+            href="#links"
             data-pulse
             className="flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-transform active:scale-95"
           >
@@ -267,7 +266,7 @@ export default function Home() {
           <ContactForm />
         </div>
 
-        <ul className="mt-8 overflow-hidden rounded-[22px] bg-fill">
+        <ul id="links" className="mt-8 scroll-mt-6 overflow-hidden rounded-[22px] bg-fill">
           {links.map(({ label, detail, href, icon: Icon, tint, download }) => (
             <li key={label} className="group/row">
               <a
