@@ -112,6 +112,8 @@ body {
 
 /* Horizontal snap rail that bleeds to the screen edge on mobile */
 .rail {
+  /* Contains absolute children (sr-only labels), which would otherwise widen the page */
+  position: relative;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
