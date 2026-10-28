@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Projects" };
 
 export default function ProjectsPage() {
   return (
-    <main id="main" className="mx-auto max-w-[640px] px-6 pb-24 pt-10">
+    <main id="main" className="mx-auto max-w-[640px] overflow-x-clip px-6 pb-24 pt-10">
       <Link href="/" className="-ml-1 inline-flex items-center gap-0.5 text-[15px] font-medium text-link">
         <ChevronLeft className="size-5" strokeWidth={2.25} />
         Viral Sachde
@@ -23,7 +23,7 @@ export default function ProjectsPage() {
             <div className="w-[47%] shrink-0 sm:w-[220px]">
               <PhonePreview preview={p.preview} title={p.title} />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 break-words">
               <span className="text-[12px] font-medium text-muted">{p.platforms}</span>
               <h2 className="mt-1 text-[22px] font-semibold leading-tight tracking-[-0.03em]">{p.title}</h2>
               <p className="mt-2 text-[14px] leading-snug text-ink/75">{p.description}</p>
