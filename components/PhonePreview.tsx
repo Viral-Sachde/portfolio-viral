@@ -1,5 +1,6 @@
 import type { Preview } from "@/lib/content";
 import { palette } from "@/lib/mosaic";
+import ScreenFit from "./ScreenFit";
 
 // Phone-framed project preview with an illustrated screen per project.
 export default function PhonePreview({ preview, title }: { preview: Preview; title: string }) {
@@ -7,7 +8,9 @@ export default function PhonePreview({ preview, title }: { preview: Preview; tit
     <div className="light-scope rounded-[2.2rem] bg-ink p-[6px] shadow-[0_12px_30px_-12px_rgb(0_0_0/0.35)]" role="img" aria-label={`${title} preview`}>
       <div className="relative aspect-[9/19] overflow-hidden rounded-[1.85rem] bg-white">
         <div className="absolute left-1/2 top-2 z-10 h-[16px] w-[32%] -translate-x-1/2 rounded-full bg-ink" />
-        <Screen kind={preview.kind} />
+        <ScreenFit>
+          <Screen kind={preview.kind} />
+        </ScreenFit>
       </div>
     </div>
   );

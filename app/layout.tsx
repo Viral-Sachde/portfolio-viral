@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <noscript>
-          <style>{`.reveal{opacity:1;transform:none}.board svg{clip-path:none}`}</style>
+          <style>{`.reveal{opacity:1;transform:none}.board svg{clip-path:none}.screen-fit{visibility:visible!important}`}</style>
         </noscript>
         {children}
         <CursorPixel />
