@@ -138,11 +138,11 @@ details[open] .chev {
   transform-origin: center;
   cursor: pointer;
 }
-/* Big screens: each square pops in, staggered by distance from the mosaic's origin */
+/* Big screens: the mosaic grows out of its origin in chunky steps. One animation on the SVG
+   instead of hundreds on its squares, so the first second after load stays smooth. */
 @media (min-width: 640px) and (hover: hover) {
-  .mosaic.is-loading rect {
-    animation: px-in 0.55s var(--ease) both;
-    animation-delay: var(--d);
+  .mosaic {
+    animation: px-in 0.9s steps(9, end) 0.15s both;
   }
 }
 .mosaic rect.flip {
@@ -159,7 +159,8 @@ details[open] .chev {
 }
 
 @keyframes px-in {
-  from { opacity: 0; transform: scale(0.2); }
+  from { clip-path: circle(0% at var(--o)); }
+  to { clip-path: circle(150% at var(--o)); }
 }
 @keyframes px-flip {
   35% { fill: var(--alt); transform: scale(0.78); }
@@ -266,12 +267,11 @@ details[open] .chev {
   0%, 100% { transform: none; }
   50% { transform: translateY(3px); }
 }
-.scroll-blur > div:nth-child(1) { --b: 0.5px; --m: transparent 0%, #000 16%, #000 33%, transparent 50%; }
-.scroll-blur > div:nth-child(2) { --b: 1px; --m: transparent 16%, #000 33%, #000 50%, transparent 66%; }
-.scroll-blur > div:nth-child(3) { --b: 2px; --m: transparent 33%, #000 50%, #000 66%, transparent 83%; }
-.scroll-blur > div:nth-child(4) { --b: 4px; --m: transparent 50%, #000 66%, #000 83%, transparent 100%; }
-.scroll-blur > div:nth-child(5) { --b: 8px; --m: transparent 66%, #000 83%, #000 100%; }
-.scroll-blur > div:nth-child(6) { --b: 16px; --m: transparent 83%, #000 100%; }
+/* Three blur layers, not six: backdrop blur re-samples the page on every scroll frame */
+.scroll-blur > div:nth-child(-n + 3) { display: none; }
+.scroll-blur > div:nth-child(4) { --b: 1px; --m: transparent 0%, #000 35%, #000 55%, transparent 80%; }
+.scroll-blur > div:nth-child(5) { --b: 3px; --m: transparent 35%, #000 65%, #000 100%; }
+.scroll-blur > div:nth-child(6) { --b: 6px; --m: transparent 60%, #000 100%; }
 .scroll-blur > div:not(.scroll-hint) {
   -webkit-backdrop-filter: blur(var(--b));
   backdrop-filter: blur(var(--b));
@@ -279,15 +279,10 @@ details[open] .chev {
   mask-image: linear-gradient(to bottom, var(--m));
 }
 
-/* Phones: three light layers instead of six, cheaper to composite while scrolling */
 @media (max-width: 639px) {
   .scroll-blur {
     height: calc(72px + env(safe-area-inset-bottom));
   }
-  .scroll-blur > div:nth-child(-n + 3) { display: none; }
-  .scroll-blur > div:nth-child(4) { --b: 1px; --m: transparent 0%, #000 35%, #000 55%, transparent 80%; }
-  .scroll-blur > div:nth-child(5) { --b: 3px; --m: transparent 35%, #000 65%, #000 100%; }
-  .scroll-blur > div:nth-child(6) { --b: 6px; --m: transparent 60%, #000 100%; }
 }
 
 /* Phones and touch screens: mosaics and board show up directly, no reveal wipes */

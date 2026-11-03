@@ -20,16 +20,19 @@ export default function CursorPixel() {
       el.style.background = tones[tone];
       el.style.width = el.style.height = overLink ? "18px" : "10px";
     };
+    // Eases toward the pointer, then stops asking for frames until the pointer moves again.
     const loop = () => {
       const k = motionReduced() ? 1 : 0.2;
       x += (tx - x) * k;
       y += (ty - y) * k;
+      if (Math.abs(tx - x) < 0.1 && Math.abs(ty - y) < 0.1) (x = tx), (y = ty);
       el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-      frame = requestAnimationFrame(loop);
+      frame = x === tx && y === ty ? 0 : requestAnimationFrame(loop);
     };
     const onMove = (e: PointerEvent) => {
       tx = e.clientX;
       ty = e.clientY;
+      if (!frame) frame = requestAnimationFrame(loop);
       el.style.opacity = "1";
       const link = !!(e.target as Element).closest?.("a, button, summary, [data-pulse], .mosaic, .board");
       if (link !== overLink) {
@@ -43,7 +46,6 @@ export default function CursorPixel() {
     const onLeave = () => (el.style.opacity = "0");
 
     paint();
-    frame = requestAnimationFrame(loop);
     const cycle = setInterval(() => {
       if (motionReduced()) return;
       tone = (tone + 1) % tones.length;

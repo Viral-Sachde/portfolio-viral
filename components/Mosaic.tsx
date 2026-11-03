@@ -9,9 +9,10 @@ const ALT: Record<string, string> = { b: "g", n: "b", g: "y", d: "g", y: "b", o:
 
 type Origin = "tl" | "tr" | "bc";
 
-// Interactive pixel mosaic: on big screens the squares pop in from the origin on load (phones
-// show it instantly), taps ripple outward, and controls marked `data-pulse` send a wave through it.
-// Waves touch the DOM directly so a ripple never re-renders hundreds of rects through React.
+// Interactive pixel mosaic: on big screens it builds in with one stepped wipe from its origin on
+// load (phones show it instantly), taps ripple outward, and controls marked `data-pulse` send a
+// wave through it. The build-in animates the whole SVG, not each square, so first paint stays
+// cheap; waves touch the DOM directly so a ripple never re-renders hundreds of rects through React.
 function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Origin; className?: string }) {
   const svg = useRef<SVGSVGElement>(null);
   const width = Math.max(...map.map((row) => row.length));
@@ -22,17 +23,15 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
       map.flatMap((row, y) =>
         row
           .split("")
-          .flatMap((c, x) => (palette[c] ? [{ x, y, c, d: Math.round(Math.hypot(x - start[0], y - start[1]) * 38) }] : []))
+          .flatMap((c, x) => (palette[c] ? [{ x, y, c }] : []))
       ),
-    [map, start]
+    [map]
   );
 
   useEffect(() => {
     const el = svg.current;
     if (!el) return;
-    // Drop the build-in class once every square has popped in, so later ripples don't replay it.
-    const loaded = window.setTimeout(() => el.classList.remove("is-loading"), Math.max(...cells.map((c) => c.d)) + 700);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => clearTimeout(loaded);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const rects = Array.from(el.querySelectorAll("rect"));
     // Phones skip the ambient effects (idle twinkle, CTA pulse) and only ripple on a direct tap.
     const phone = window.matchMedia("(max-width: 639px), (hover: none)").matches;
@@ -86,7 +85,6 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
     document.addEventListener("pointerdown", onPulse);
     return () => {
       clearTimeout(clear);
-      clearTimeout(loaded);
       clearInterval(twinkle);
       io.disconnect();
       el.removeEventListener("pointerdown", onTap);
@@ -101,7 +99,8 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
       viewBox={`0 0 ${width} ${height}`}
       shapeRendering="crispEdges"
       aria-hidden
-      className={`mosaic is-loading ${className ?? ""}`}
+      style={{ "--o": { tl: "0% 0%", tr: "100% 0%", bc: "50% 100%" }[origin] } as React.CSSProperties}
+      className={`mosaic ${className ?? ""}`}
     >
       {cells.map((cell, i) => (
         <rect
@@ -112,7 +111,7 @@ function Mosaic({ map, origin = "tl", className }: { map: string[]; origin?: Ori
           width={1.02}
           height={1.02}
           fill={palette[cell.c]}
-          style={{ "--alt": palette[ALT[cell.c]], "--d": `${cell.d}ms` } as React.CSSProperties}
+          style={{ "--alt": palette[ALT[cell.c]] } as React.CSSProperties}
         />
       ))}
     </svg>
