@@ -6,6 +6,7 @@ import Clock from "@/components/Clock";
 import ConsoleHello from "@/components/ConsoleHello";
 import ContactForm from "@/components/ContactForm";
 import FooterLine from "@/components/FooterLine";
+import Guestbook from "@/components/Guestbook";
 import Cover from "@/components/Cover";
 import InView from "@/components/InView";
 import Mosaic from "@/components/Mosaic";
@@ -13,6 +14,7 @@ import { CORNER, EDGE, GROUND } from "@/lib/mosaic";
 import ProjectPhone from "@/components/ProjectPhone";
 import ScrollBlur from "@/components/ScrollBlur";
 import StackPicker from "@/components/StackPicker";
+import Tetris from "@/components/Tetris";
 import { articles, readingMinutes } from "@/lib/articles";
 import { experience, projects } from "@/lib/content";
 
@@ -257,6 +259,21 @@ export default function Home() {
         <div className="mt-8">
           <Board />
         </div>
+      </Section>
+
+      <Section label="Arcade" wide>
+        <p className="mb-8 max-w-[16ch] text-[32px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[48px]">
+          Same pieces. Now they fall.
+        </p>
+        <Tetris />
+      </Section>
+
+      <Section label="Guestbook" wide>
+        <p className="max-w-[16ch] text-[32px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[48px]">
+          Leave a mark.
+        </p>
+        <p className="mb-8 mt-3 text-[15px] text-muted">Draw yourself in 25 pixels and stamp it on the wall.</p>
+        <Guestbook />
       </Section>
 
       <Section id="contact" label="Contact">
