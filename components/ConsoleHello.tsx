@@ -9,11 +9,11 @@ const title = `font: 600 16px system-ui; color: ${BLUE}`;
 const body = `font: 13px system-ui; color: ${MUTED}`;
 const item = "font: 600 13px system-ui; color: #1A7F37";
 
-type Key = "koffee" | "whoami" | "projects";
-const NAMES: Record<Key, string> = { koffee: "☕ koffee bean", whoami: "🧩 puzzle piece", projects: "🔧 wrench" };
+type Key = "koffooo" | "whoami" | "projects";
+const NAMES: Record<Key, string> = { koffooo: "☕ koffooo bean", whoami: "🧩 puzzle piece", projects: "🔧 wrench" };
 
 // A tiny text adventure for visitors curious enough to open devtools. Collect three items with
-// whoami(), projects() and koffee(), then hire() unlocks the email and a "you found it" badge.
+// whoami(), projects() and koffooo(), then hire() unlocks the email and a "you found it" badge.
 export default function ConsoleHello() {
   useEffect(() => {
     const found = new Set<Key>();
@@ -36,7 +36,7 @@ export default function ConsoleHello() {
             "",
             "  whoami()    who is this guy",
             "  projects()  what he's shipped",
-            "  koffee()    refuel",
+            "  koffooo()   refuel",
             "  bag()       what you're carrying",
             "  hire()      knock on the door",
           ].join("\n")
@@ -51,10 +51,14 @@ export default function ConsoleHello() {
         say("Scroll up to Projects for the real list. Short version: products, end to end, used by real people.");
         get("projects");
       },
-      koffee() {
+      koffooo() {
+        if (found.has("koffooo")) {
+          say("te mara maate coffee kem mangai? ☕", `font: italic 600 14px system-ui; color: ${BLUE}`);
+          return;
+        }
         say("    ( (\n     ) )\n  ........\n  |      |]\n  \\      /\n   `----'", `font: 12px ui-monospace, monospace; color: ${MUTED}`);
         say("Brewed. Strong, no sugar, slightly too hot. Exactly how code reviews should be.");
-        get("koffee");
+        get("koffooo");
       },
       bag() {
         if (!found.size) return say("Empty. Try help().");
@@ -75,7 +79,7 @@ export default function ConsoleHello() {
         say("Say you came from the console. I'll know you're one of us.", body);
       },
     };
-    commands.coffee = commands.koffee;
+    commands.koffee = commands.coffee = commands.koffooo;
 
     for (const [name, fn] of Object.entries(commands)) w[name] = fn;
 
