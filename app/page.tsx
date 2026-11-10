@@ -75,7 +75,7 @@ function Widget({ className, children }: { className: string; children: React.Re
 export default function Home() {
   return (
     <main id="main" className="overflow-x-clip">
-      <header className="relative isolate flex min-h-svh flex-col items-center justify-center px-6 pb-28 pt-28 text-center sm:pb-[calc(28svh+1.5rem)] sm:pt-20">
+      <header className="relative isolate flex min-h-svh flex-col items-center justify-center px-6 pb-28 pt-28 text-center sm:pb-[calc(28svh+1.5rem)] sm:pt-20 lg:pb-[calc(28svh+5.5rem)]">
         <Mosaic map={CORNER} className="absolute left-0 top-0 -z-10 w-[34vw] max-w-[260px]" />
         <Mosaic map={EDGE} origin="tr" className="absolute right-0 top-[11%] -z-10 w-[13vw] max-w-[140px] sm:top-[22%] sm:w-[11vw]" />
         <Mosaic map={GROUND} origin="bc" className="absolute bottom-0 left-1/2 -z-10 max-h-[28svh] w-[78vw] max-w-[560px] -translate-x-1/2" />
