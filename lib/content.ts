@@ -113,7 +113,7 @@ export const projects: Project[] = [
     platforms: "Web",
     stack: "Next.js · Stream · Clerk · Tailwind",
     preview: { kind: "meet" },
-    href: "https://room-meeting-app.vercel.app",
+    href: "https://github.com/Viral-Sachde/Room-meeting-app",
   },
   {
     slug: "bloop",
@@ -122,7 +122,7 @@ export const projects: Project[] = [
     platforms: "iOS · Android",
     stack: "React Native · TypeScript",
     preview: { kind: "bday" },
-    href: "https://github.com/Viral-Sachde/bloop-bday",
+    href: "https://bloop-bday.vercel.app",
   },
   {
     slug: "crazy-image-pro",
